@@ -13,6 +13,11 @@ var ship = {
 	'posY': 250
 };
 
+var shipTarget = {
+	x: 100,
+	y: 250
+};
+
 var mousePos = {};
 
 function drawGame() {
@@ -25,11 +30,24 @@ function drawGame() {
 
 
 function moveThings() {
-	if(ship.posY + 11 < screenHeight-ground) {
-		ship.posY++;
-	}
+	// if(ship.posY + 11 < screenHeight-ground) {
+	// 	ship.posY++;
+	// }
 
-	ship.posY = Math.min(screenHeight-ground,ship.posY);
+	// ship.posY = Math.min(screenHeight-ground,ship.posY);
+
+	if(ship.posX < shipTarget.x) {
+		ship.posX += 2;
+	}
+	if(ship.posX > shipTarget.x) {
+		ship.posX -= 2;
+	}
+	if(ship.posY < shipTarget.y) {
+		ship.posY += 2;
+	}
+	if(ship.posY > shipTarget.y) {
+		ship.posY -= 2;
+	}
 
 	if(ship.posX + ship.width >= screenWidth) {
 		ship.posX -= 2;
@@ -39,9 +57,9 @@ function moveThings() {
 	}
 }
 
-function moveToTarget(target) {
-	ship.posX = target.clientX;
-	ship.posY = target.clientY;
+function setTarget(target) {
+	shipTarget.x = target.clientX;
+	shipTarget.y = target.clientY;
 }
 
 function getMousePosition(canvas, evnt) {
@@ -57,7 +75,7 @@ canvas.addEventListener('mousemove', function(evnt) {
 }, false);
 
 canvas.addEventListener('mousedown', function(evnt) {
-	moveToTarget(evnt);
+	setTarget(evnt);
 });
 
 setInterval(function() {
