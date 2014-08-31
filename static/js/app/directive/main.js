@@ -4,17 +4,16 @@ smApp.directive("gamescreen", function() {
 		restrict: "A",
 		link: function($scope, element){
 
-			$scope.frames = 0;
-
 			var canvas = element[0];
 			var ctx = element[0].getContext('2d');
 
 			$scope.ctx = ctx;
+			$scope.frames = 0;
 
 			var screenWidth = canvas.width;
 			var screenHeight = canvas.height;
 
-			var ship = {
+			$scope.ship = {
 				'width': 30,
 				'height': 10,
 				'posX': screenWidth / 2,
@@ -30,7 +29,7 @@ smApp.directive("gamescreen", function() {
 
 			function drawGame() {
 			ctx.clearRect(0,0,screenWidth,screenHeight);
-			ctx.fillRect(ship.posX, ship.posY, ship.width, ship.height);
+			ctx.fillRect($scope.ship.posX, $scope.ship.posY, $scope.ship.width, $scope.ship.height);
 			ctx.fillText("MouseX=" + mousePos.x + " MouseY=" + mousePos.y, 2, 20);
 			}
 
@@ -42,24 +41,24 @@ smApp.directive("gamescreen", function() {
 
 				// ship.posY = Math.min(screenHeight-ground,ship.posY);
 
-				if(ship.posX < shipTarget.x) {
-					ship.posX += 3;
+				if($scope.ship.posX < shipTarget.x) {
+					$scope.ship.posX += 3;
 				}
-				if(ship.posX > shipTarget.x) {
-					ship.posX -= 3;
+				if($scope.ship.posX > shipTarget.x) {
+					$scope.ship.posX -= 3;
 				}
-				if(ship.posY < shipTarget.y) {
-					ship.posY += 3;
+				if($scope.ship.posY < shipTarget.y) {
+					$scope.ship.posY += 3;
 				}
-				if(ship.posY > shipTarget.y) {
-					ship.posY -= 3;
+				if($scope.ship.posY > shipTarget.y) {
+					$scope.ship.posY -= 3;
 				}
 
-				if(ship.posX + ship.width >= screenWidth) {
-					ship.posX -= 3;
+				if($scope.ship.posX + $scope.ship.width >= screenWidth) {
+					$scope.ship.posX -= 3;
 				}
-				if(ship.posX <= 0) {
-					ship.posX += 3;
+				if($scope.ship.posX <= 0) {
+					$scope.ship.posX += 3;
 				}
 			}
 
@@ -91,8 +90,8 @@ smApp.directive("gamescreen", function() {
 			setInterval(function() {
 				moveThings();
 				drawGame();
-				$scope.$apply($scope.posX = ship.posX);
-				$scope.$apply($scope.posY = ship.posY);
+				$scope.$apply($scope.posX = $scope.ship.posX);
+				$scope.$apply($scope.posY = $scope.ship.posY);
 				$scope.frames += 1;
 			}, 20);
 
