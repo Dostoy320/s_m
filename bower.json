@@ -1,0 +1,19 @@
+{
+  "name": "s_m",
+  "version": "0.1.0",
+  "homepage": "https://github.com/Dostoy320/s_m",
+  "authors": [
+    "Adam Gregory <dostoy320@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angularjs": "~1.2.23"
+  }
+}
