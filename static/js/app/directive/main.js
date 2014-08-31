@@ -4,8 +4,12 @@ smApp.directive("gamescreen", function() {
 		restrict: "A",
 		link: function($scope, element){
 
+			$scope.frames = 0;
+
 			var canvas = element[0];
 			var ctx = element[0].getContext('2d');
+
+			$scope.ctx = ctx;
 
 			var screenWidth = canvas.width;
 			var screenHeight = canvas.height;
@@ -39,29 +43,32 @@ smApp.directive("gamescreen", function() {
 				// ship.posY = Math.min(screenHeight-ground,ship.posY);
 
 				if(ship.posX < shipTarget.x) {
-					ship.posX += 2;
+					ship.posX += 3;
 				}
 				if(ship.posX > shipTarget.x) {
-					ship.posX -= 2;
+					ship.posX -= 3;
 				}
 				if(ship.posY < shipTarget.y) {
-					ship.posY += 2;
+					ship.posY += 3;
 				}
 				if(ship.posY > shipTarget.y) {
-					ship.posY -= 2;
+					ship.posY -= 3;
 				}
 
 				if(ship.posX + ship.width >= screenWidth) {
-					ship.posX -= 2;
+					ship.posX -= 3;
 				}
 				if(ship.posX <= 0) {
-					ship.posX += 2;
+					ship.posX += 3;
 				}
 			}
 
 			function setTarget(target) {
-				shipTarget.x = target.clientX;
-				shipTarget.y = target.clientY;
+				var rect = canvas.getBoundingClientRect();
+				shipTarget.x = target.clientX - rect.left;
+				shipTarget.y = target.clientY - rect.top;
+
+				console.log(shipTarget.x);
 			}
 
 			function getMousePosition(canvas, evnt) {
@@ -77,6 +84,7 @@ smApp.directive("gamescreen", function() {
 			}, false);
 
 			canvas.addEventListener('mousedown', function(evnt) {
+				console.log(evnt.clientX);
 				setTarget(evnt);
 			});
 
@@ -85,6 +93,7 @@ smApp.directive("gamescreen", function() {
 				drawGame();
 				$scope.$apply($scope.posX = ship.posX);
 				$scope.$apply($scope.posY = ship.posY);
+				$scope.frames += 1;
 			}, 20);
 
 

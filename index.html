@@ -2,17 +2,31 @@
 <html ng-app="smApp">
 <head>
 	<title>S_M</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="static/css/main.css">
+	<link rel="stylesheet" type="text/css" href="bower_components/bootstrap-css/css/bootstrap.min.css">
 	<script src="bower_components/angularjs/angular.js"></script>
 </head>
 <body>
 
-<div id="console" ng-controller="consoleView">
-	<canvas id="game" width="700" height="500" gamescreen></canvas>
+<div class="container">
+
+<div class="row row-xs-height">
+	<h2 class="col-sm-4">Game Title Here!</h2>
+</div>
+
+<div class="row">
+<div id="console" class="col-sm-4" ng-controller="consoleView">
+	<canvas id="game" width="800px" height="550px" gamescreen></canvas>
 	<br>
 	<h5>The X value is: {{posX}} </h5>
 	<h5>The Y value is: {{posY}} </h5>
+	<h5>Total frames drawn: {{frames}}</h5>
+	<button ng-click="clickTest()" class="btn btn-primary btn-mini">Draw Something!</button>
 </div>
+</div>
+
+</div> <!-- End container -->
 
 <script src="static/js/app/view/console-view.js"></script>
 <script src="static/js/app/directive/main.js"></script>

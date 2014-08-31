@@ -1,3 +1,6 @@
-#game {
+canvas {
 	border: 1px solid;
+}
+#console {
+	margin: 0 auto;
 }
