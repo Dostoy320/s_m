@@ -1,14 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="smApp">
 <head>
 	<title>S_M</title>
 	<link rel="stylesheet" type="text/css" href="static/css/main.css">
+	<script src="bower_components/angularjs/angular.js"></script>
 </head>
 <body>
 
-<canvas id="game" width="800" height="600"></canvas>
+<div id="console" ng-controller="consoleView">
+	<canvas id="game" width="700" height="500" gamescreen></canvas>
+	<br>
+	<h5>The X value is: {{posX}} </h5>
+	<h5>The Y value is: {{posY}} </h5>
+</div>
 
-<script src="static/js/main.js"></script>
+<script src="static/js/app/view/console-view.js"></script>
+<script src="static/js/app/directive/main.js"></script>
+
 
 </body>
 </html>
