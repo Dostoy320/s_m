@@ -35,11 +35,6 @@ smApp.directive("gamescreen", function() {
 
 
 			function moveThings() {
-				// if(ship.posY + 11 < screenHeight-ground) {
-				// 	ship.posY++;
-				// }
-
-				// ship.posY = Math.min(screenHeight-ground,ship.posY);
 
 				if($scope.ship.posX < shipTarget.x) {
 					$scope.ship.posX += 3;
