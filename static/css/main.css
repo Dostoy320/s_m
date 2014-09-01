@@ -2,6 +2,7 @@ canvas {
 	border: 8px solid;
 	border-radius: 10px;
 	background: url('../img/starfield.jpg');
+	cursor: crosshair;
 }
 #console {
 	margin: 0 auto;

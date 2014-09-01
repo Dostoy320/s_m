@@ -21,6 +21,10 @@ smApp.directive("gamescreen", function() {
 				'posX': screenWidth / 2,
 				'posY': screenHeight / 2
 			};
+
+			var img = new Image();
+			img.src = 'static/img/ship-small.png';
+
 			var shipTarget = {
 				x: screenWidth / 2,
 				y: screenHeight / 2
@@ -36,16 +40,17 @@ smApp.directive("gamescreen", function() {
 			};
 			$scope.clickSignalTarget = function() {
 				ctx.beginPath();
-	      ctx.arc($scope.click.targetX, $scope.click.targetY, $scope.click.targetRadius, 0, 2 * Math.PI, false);
-	      ctx.fillStyle = 'rgb(237, 237, 102';
-	      ctx.fill();
-	      ctx.strokeStyle = '#003300';
+	      ctx.arc($scope.click.targetX - 8, $scope.click.targetY - 8, $scope.click.targetRadius, 0, 2 * Math.PI, false);
+	      ctx.lineWidth = 2;
+	      ctx.strokeStyle = 'rgb(237, 237, 102)';
 	      ctx.stroke();
+	      ctx.closePath();
 			}
 
 			// Draw persistent objects (space and ship):
 			function drawGame() {
 			ctx.clearRect(0,0,screenWidth,screenHeight);
+			//ctx.drawImage(img, $scope.ship.posX, $scope.ship.posY);
 			ctx.fillStyle = "rgb(213,209,255)";
 			ctx.fillRect($scope.ship.posX, $scope.ship.posY, $scope.ship.width, $scope.ship.height);
 			ctx.fillText("MouseX=" + mousePos.x + " MouseY=" + mousePos.y, 2, 20);
@@ -75,8 +80,8 @@ smApp.directive("gamescreen", function() {
 			}
 
 			function setTarget(target) {
-				shipTarget.x = target.clientX - rect.left;
-				shipTarget.y = target.clientY - rect.top;
+				shipTarget.x = target.clientX - rect.left - 23;
+				shipTarget.y = target.clientY - rect.top - 15;
 			}
 
 			function getMousePosition(canvas, evnt) {
@@ -126,6 +131,7 @@ smApp.directive("gamescreen", function() {
 				drawGame();
 
 				$scope.clickSignalTarget();
+				$scope.drawPlanets();
 
 				$scope.$apply($scope.posX = $scope.ship.posX);
 				$scope.$apply($scope.posY = $scope.ship.posY);
