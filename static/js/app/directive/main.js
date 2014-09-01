@@ -6,6 +6,7 @@ smApp.directive("gamescreen", function() {
 
 			var canvas = element[0];
 			var ctx = element[0].getContext('2d');
+			var rect = canvas.getBoundingClientRect();
 
 			$scope.ctx = ctx;
 			$scope.frames = 0;
@@ -27,8 +28,24 @@ smApp.directive("gamescreen", function() {
 
 			var mousePos = {};
 
+			$scope.click = {
+				targetX: 0,
+				targetY: 0,
+				targetRadius: 0
+			};
+
+			$scope.clickSignalTarget = function() {
+				ctx.beginPath();
+	      ctx.arc($scope.click.targetX, $scope.click.targetY, $scope.click.targetRadius, 0, 2 * Math.PI, false);
+	      ctx.fillStyle = 'red';
+	      ctx.fill();
+	      ctx.strokeStyle = '#003300';
+	      ctx.stroke();
+			}
+
 			function drawGame() {
 			ctx.clearRect(0,0,screenWidth,screenHeight);
+			ctx.fillStyle = "rgb(213,209,255)";
 			ctx.fillRect($scope.ship.posX, $scope.ship.posY, $scope.ship.width, $scope.ship.height);
 			ctx.fillText("MouseX=" + mousePos.x + " MouseY=" + mousePos.y, 2, 20);
 			}
@@ -58,7 +75,6 @@ smApp.directive("gamescreen", function() {
 			}
 
 			function setTarget(target) {
-				var rect = canvas.getBoundingClientRect();
 				shipTarget.x = target.clientX - rect.left;
 				shipTarget.y = target.clientY - rect.top;
 
@@ -66,7 +82,6 @@ smApp.directive("gamescreen", function() {
 			}
 
 			function getMousePosition(canvas, evnt) {
-				var rect = canvas.getBoundingClientRect();
 				return {
 					x: evnt.clientX - rect.left,
 					y: evnt.clientY - rect.top
@@ -78,13 +93,42 @@ smApp.directive("gamescreen", function() {
 			}, false);
 
 			canvas.addEventListener('mousedown', function(evnt) {
-				console.log(evnt.clientX);
+				// Initial click indicator:
+				$scope.click = {
+					targetX: evnt.clientX - rect.left,
+					targetY: evnt.clientY - rect.top,
+					targetRadius: 3
+				};
+
+				// Set target for ship travel:
 				setTarget(evnt);
+
+				// Click indicator animation:
+				setTimeout(function() {
+					$scope.click.targetRadius = 6;
+					setTimeout(function() {
+						$scope.click.targetRadius = 12;
+						setTimeout(function() {
+							$scope.click.targetRadius = 6;
+							setTimeout(function() {
+								$scope.click.targetRadius = 3;
+								setTimeout(function() {
+									$scope.click.targetRadius = 0;
+								}, 50);
+							}, 50);
+						}, 50);
+					}, 50);
+				}, 50);
+
 			});
 
 			setInterval(function() {
+				ctx.fillStyle = 'black';
 				moveThings();
 				drawGame();
+
+				$scope.clickSignalTarget();
+
 				$scope.$apply($scope.posX = $scope.ship.posX);
 				$scope.$apply($scope.posY = $scope.ship.posY);
 				$scope.frames += 1;
