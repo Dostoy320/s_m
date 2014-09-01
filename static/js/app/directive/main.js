@@ -14,13 +14,13 @@ smApp.directive("gamescreen", function() {
 			var screenWidth = canvas.width;
 			var screenHeight = canvas.height;
 
+			// Initialize ship at center of screen:
 			$scope.ship = {
 				'width': 30,
 				'height': 10,
 				'posX': screenWidth / 2,
 				'posY': screenHeight / 2
 			};
-
 			var shipTarget = {
 				x: screenWidth / 2,
 				y: screenHeight / 2
@@ -28,21 +28,22 @@ smApp.directive("gamescreen", function() {
 
 			var mousePos = {};
 
+			// Cursor-click animation:
 			$scope.click = {
 				targetX: 0,
 				targetY: 0,
 				targetRadius: 0
 			};
-
 			$scope.clickSignalTarget = function() {
 				ctx.beginPath();
 	      ctx.arc($scope.click.targetX, $scope.click.targetY, $scope.click.targetRadius, 0, 2 * Math.PI, false);
-	      ctx.fillStyle = 'red';
+	      ctx.fillStyle = 'rgb(237, 237, 102';
 	      ctx.fill();
 	      ctx.strokeStyle = '#003300';
 	      ctx.stroke();
 			}
 
+			// Draw persistent objects (space and ship):
 			function drawGame() {
 			ctx.clearRect(0,0,screenWidth,screenHeight);
 			ctx.fillStyle = "rgb(213,209,255)";
@@ -50,9 +51,8 @@ smApp.directive("gamescreen", function() {
 			ctx.fillText("MouseX=" + mousePos.x + " MouseY=" + mousePos.y, 2, 20);
 			}
 
-
-			function moveThings() {
-
+			// Move ship to target:
+			function moveShip() {
 				if($scope.ship.posX < shipTarget.x) {
 					$scope.ship.posX += 3;
 				}
@@ -77,8 +77,6 @@ smApp.directive("gamescreen", function() {
 			function setTarget(target) {
 				shipTarget.x = target.clientX - rect.left;
 				shipTarget.y = target.clientY - rect.top;
-
-				console.log(shipTarget.x);
 			}
 
 			function getMousePosition(canvas, evnt) {
@@ -124,7 +122,7 @@ smApp.directive("gamescreen", function() {
 
 			setInterval(function() {
 				ctx.fillStyle = 'black';
-				moveThings();
+				moveShip();
 				drawGame();
 
 				$scope.clickSignalTarget();
