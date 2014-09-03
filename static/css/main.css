@@ -3,6 +3,7 @@ canvas {
 	border-radius: 10px;
 	background: url('../img/starfield.jpg');
 	cursor: crosshair;
+	position: relative;
 }
 #console {
 	margin: 0 auto;

@@ -1,0 +1,23 @@
+{
+  "name": "s_m",
+  "version": "0.1.0",
+  "description": "To install: - Clone repo: `git clone git@github.com:Dostoy320/s_m.git` - Navigate to root: `cd s_m` - Type: `bower install` to install dependencies.",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dostoy320/s_m.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Dostoy320/s_m/issues"
+  },
+  "homepage": "https://github.com/Dostoy320/s_m",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-concat": "^0.5.0"
+  }
+}
