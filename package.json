@@ -1,7 +1,7 @@
 {
   "name": "s_m",
   "version": "0.1.0",
-  "description": "To install: - Clone repo: `git clone git@github.com:Dostoy320/s_m.git` - Navigate to root: `cd s_m` - Type: `bower install` to install dependencies.",
+  "description": "canvas-game attempt",
   "main": "Gruntfile.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
