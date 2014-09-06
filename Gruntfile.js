@@ -8,11 +8,18 @@ module.exports = function(grunt) {
 				src: ['static/js/**/*.js'],
 				dest: 'static/dist/s_m.js'
 			}
-			
+		},
+		watch: {
+			javscript: {
+				files: ['static/js/**/*.js'],
+				tasks: ['concat:dist'],
+				options: { livereload: true}
+			}
 		}
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-concat');
+	grunt.loadNpmTasks('grunt-contrib-watch');
 
-	grunt.registerTask('default', ['concat']);
+	grunt.registerTask('default', ['concat', 'watch']);
 };

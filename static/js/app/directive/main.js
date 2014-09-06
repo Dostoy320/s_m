@@ -10,6 +10,8 @@ smApp.directive("gamescreen", function() {
 			var canvas = element[0];
 			var ctx = element[0].getContext('2d');
 			var rect = canvas.getBoundingClientRect();
+			var img = new Image();
+			img.src = 'static/img/tiny_rocket.png';
 
 			$scope.ctx = ctx;
 			$scope.frames = 0;
@@ -24,9 +26,6 @@ smApp.directive("gamescreen", function() {
 				'posX': screenWidth / 2,
 				'posY': screenHeight / 2
 			};
-
-			var img = new Image();
-			img.src = 'static/img/ship-small.png';
 
 			var shipTarget = {
 				x: screenWidth / 2,
@@ -55,8 +54,9 @@ smApp.directive("gamescreen", function() {
 			ctx.clearRect(0,0,screenWidth,screenHeight);
 			//ctx.drawImage(img, $scope.ship.posX, $scope.ship.posY);
 			ctx.fillStyle = "rgb(213,209,255)";
-			ctx.fillRect($scope.ship.posX, $scope.ship.posY, $scope.ship.width, $scope.ship.height);
+			//ctx.fillRect($scope.ship.posX, $scope.ship.posY, $scope.ship.width, $scope.ship.height);
 			ctx.fillText("MouseX=" + mousePos.x + " MouseY=" + mousePos.y, 2, 20);
+			ctx.drawImage(img, $scope.ship.posX, $scope.ship.posY)
 			}
 
 			// Move ship to target:
@@ -132,6 +132,8 @@ smApp.directive("gamescreen", function() {
 				ctx.fillStyle = 'black';
 				moveShip();
 				drawGame();
+
+				$scope.drawPlanets();
 
 				$scope.clickSignalTarget();
 

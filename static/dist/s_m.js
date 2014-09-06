@@ -10,6 +10,8 @@ smApp.directive("gamescreen", function() {
 			var canvas = element[0];
 			var ctx = element[0].getContext('2d');
 			var rect = canvas.getBoundingClientRect();
+			var img = new Image();
+			img.src = 'static/img/tiny_rocket.png';
 
 			$scope.ctx = ctx;
 			$scope.frames = 0;
@@ -24,9 +26,6 @@ smApp.directive("gamescreen", function() {
 				'posX': screenWidth / 2,
 				'posY': screenHeight / 2
 			};
-
-			var img = new Image();
-			img.src = 'static/img/ship-small.png';
 
 			var shipTarget = {
 				x: screenWidth / 2,
@@ -55,8 +54,9 @@ smApp.directive("gamescreen", function() {
 			ctx.clearRect(0,0,screenWidth,screenHeight);
 			//ctx.drawImage(img, $scope.ship.posX, $scope.ship.posY);
 			ctx.fillStyle = "rgb(213,209,255)";
-			ctx.fillRect($scope.ship.posX, $scope.ship.posY, $scope.ship.width, $scope.ship.height);
+			//ctx.fillRect($scope.ship.posX, $scope.ship.posY, $scope.ship.width, $scope.ship.height);
 			ctx.fillText("MouseX=" + mousePos.x + " MouseY=" + mousePos.y, 2, 20);
+			ctx.drawImage(img, $scope.ship.posX, $scope.ship.posY)
 			}
 
 			// Move ship to target:
@@ -133,6 +133,8 @@ smApp.directive("gamescreen", function() {
 				moveShip();
 				drawGame();
 
+				$scope.drawPlanets();
+
 				$scope.clickSignalTarget();
 
 				$scope.$apply($scope.posX = $scope.ship.posX);
@@ -173,12 +175,21 @@ smApp.service('planetService', function() {
 });	
 
 	
-	var drawPlanets = function() {
+	
 
-		$scope.ctx.beginPath();
-    $scope.ctx.arc(40, 80, 30, 0, 2 * Math.PI, false);
-    $scope.ctx.lineWidth = 2;
-    $scope.ctx.strokeStyle = 'rgb(237, 237, 102)';
-    $scope.ctx.stroke();
-    $scope.ctx.closePath();
-		};
+smApp.directive("gamescreen", function() {
+
+	return {
+		link: function($scope) {
+
+			$scope.drawPlanets = function() {
+				$scope.ctx.beginPath();
+		    $scope.ctx.arc(40, 80, 30, 0, 2 * Math.PI, false);
+		    $scope.ctx.lineWidth = 2;
+		    $scope.ctx.strokeStyle = 'rgb(237, 237, 102)';
+		    $scope.ctx.stroke();
+		    $scope.ctx.closePath();
+			};
+		}
+	}
+});
