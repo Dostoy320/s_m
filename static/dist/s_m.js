@@ -179,7 +179,7 @@ smApp.directive("gamescreen", function() {
 			$scope.planetBuilder = {
 				makePlanets: function(num) {
 
-					function isNotUnique(planet, planets) {
+					function isUnique(planet, planets) {
 						_.forEach(planets, function(option) {
 							console.log(option);
 							if(option.x >= planet.x - 42
@@ -187,6 +187,7 @@ smApp.directive("gamescreen", function() {
 								|| option.y >= planet.y - 42
 								|| option.y <= planet.y +42) {
 								return false;
+								break;
 							} else {
 								return true;
 							}
@@ -202,7 +203,7 @@ smApp.directive("gamescreen", function() {
 							planet.x = Math.round(Math.random() * (($scope.canvas.width - 42) - 42) + 42);
 							planet.y = Math.round(Math.random() * (($scope.canvas.height -42) - 42) + 42);
 							planet.d = Math.round(Math.random() * (40 - 10) + 10);
-						}	while (isNotUnique(planet, planets) === false);
+						}	while (isUnique(planet, planets) === false);
 
 						planets.push(planet);
 					}
