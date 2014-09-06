@@ -13,6 +13,7 @@ smApp.directive("gamescreen", function() {
 			var img = new Image();
 			img.src = 'static/img/tiny_rocket.png';
 
+			$scope.canvas = canvas;
 			$scope.ctx = ctx;
 			$scope.frames = 0;
 
@@ -128,12 +129,20 @@ smApp.directive("gamescreen", function() {
 
 			});
 
+			var planets = $scope.planetBuilder.makePlanets(10);
+
+			console.log(planets);
+
 			setInterval(function() {
 				ctx.fillStyle = 'black';
 				moveShip();
 				drawGame();
 
-				$scope.drawPlanets();
+				_.forEach(planets, function(planet) {
+					$scope.planetBuilder.drawPlanets(planet);
+				});
+
+				$scope.planetBuilder.drawPlanets();
 
 				$scope.clickSignalTarget();
 
