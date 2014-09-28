@@ -133,24 +133,6 @@ smApp.directive("gamescreen", function() {
 
 			});
 
-			var planets = [
-				{
-					x: 150,
-					y: 100,
-					radius: 50
-				},
-				{
-					x: 75,
-					y: 200,
-					radius: 75
-				},
-				{
-					x: 400,
-					y: 300,
-					radius: 25
-				}
-				];
-
 			var planets = $scope.makePlanets();
 
 			setInterval(function() {

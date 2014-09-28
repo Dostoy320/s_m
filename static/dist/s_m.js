@@ -17,15 +17,19 @@ smApp.directive("gamescreen", function() {
 			$scope.ctx = ctx;
 			$scope.frames = 0;
 
-			var screenWidth = canvas.width;
-			var screenHeight = canvas.height;
+			screenWidth = canvas.width;
+			screenHeight = canvas.height;
+
+			$scope.screenWidth = screenWidth;
+			$scope.screenHeight = screenHeight;
 
 			// Initialize ship at center of screen:
 			$scope.ship = {
 				'width': 30,
 				'height': 10,
 				'posX': screenWidth / 2,
-				'posY': screenHeight / 2
+				'posY': screenHeight / 2,
+				'speed': 4
 			};
 
 			var shipTarget = {
@@ -63,23 +67,23 @@ smApp.directive("gamescreen", function() {
 			// Move ship to target:
 			function moveShip() {
 				if($scope.ship.posX < shipTarget.x) {
-					$scope.ship.posX += 3;
+					$scope.ship.posX += $scope.ship.speed;
 				}
 				if($scope.ship.posX > shipTarget.x) {
-					$scope.ship.posX -= 3;
+					$scope.ship.posX -= $scope.ship.speed;
 				}
 				if($scope.ship.posY < shipTarget.y) {
-					$scope.ship.posY += 3;
+					$scope.ship.posY += $scope.ship.speed;
 				}
 				if($scope.ship.posY > shipTarget.y) {
-					$scope.ship.posY -= 3;
+					$scope.ship.posY -= $scope.ship.speed;
 				}
 
 				if($scope.ship.posX + $scope.ship.width >= screenWidth) {
-					$scope.ship.posX -= 3;
+					$scope.ship.posX -= $scope.ship.speed;
 				}
 				if($scope.ship.posX <= 0) {
-					$scope.ship.posX += 3;
+					$scope.ship.posX += $scope.ship.speed;
 				}
 			}
 
@@ -129,27 +133,21 @@ smApp.directive("gamescreen", function() {
 
 			});
 
-			var planets = $scope.planetBuilder.makePlanets(10);
-
-			console.log(planets);
+			var planets = $scope.makePlanets();
 
 			setInterval(function() {
-				ctx.fillStyle = 'black';
+				//ctx.fillStyle = 'black';
 				moveShip();
 				drawGame();
 
-				_.forEach(planets, function(planet) {
-					$scope.planetBuilder.drawPlanets(planet);
-				});
-
-				$scope.planetBuilder.drawPlanets();
+				$scope.drawPlanets(planets);
 
 				$scope.clickSignalTarget();
 
 				$scope.$apply($scope.posX = $scope.ship.posX);
 				$scope.$apply($scope.posY = $scope.ship.posY);
 				$scope.frames += 1;
-			}, 20);
+			}, 35); // 30FPS == 33.333333
 
 
 		}
@@ -176,53 +174,61 @@ smApp.directive("gamescreen", function() {
 	return {
 		link: function($scope) {
 
-			$scope.planetBuilder = {
-				makePlanets: function(num) {
+			$scope.makePlanets = function() {
+				
+				// Establish x-axis grid slots:
+				var xCoords = [];
 
-					function isUnique(planet, planets) {
-						_.forEach(planets, function(option) {
-							console.log(option);
-							if(option.x >= planet.x - 42
-								|| option.x <= planet.x + 42
-								|| option.y >= planet.y - 42
-								|| option.y <= planet.y +42) {
-								return false;
-								break;
-							} else {
-								return true;
-							}
-						});
-						return true;
+				// Set a 10pix buffer from left edge of screen
+				var coord = 10;
+
+				while(coord < $scope.screenWidth - 10) { // 10pix buffer on right edge of screen
+					var x1 = coord + 1;
+					coord += 75;
+					var x2 = coord;
+					xCoords.push([x1, x2]);
+				}
+
+				// For each x-axis grid slot, set random X coordinate if setCoord is true
+				var planetXCoords = [];
+
+				_.forEach(xCoords, function(coordinate) {
+					var setCoord = Math.random() < 0.5 ? true: false;
+					if(setCoord == true) {
+						var xCoord = Math.random() * (coordinate[1] - coordinate[0]) + coordinate[0];
+						planetXCoords.push(Math.round(xCoord));
 					}
+				});
 
+				// Finalize coordinate array by randomly filling Y-axis coordinates
+				var planetCoords = [];
 
-					var planets = [];
-					for(var i=0;i<num;i++) {
-						do {
-							planet = {};
-							planet.x = Math.round(Math.random() * (($scope.canvas.width - 42) - 42) + 42);
-							planet.y = Math.round(Math.random() * (($scope.canvas.height -42) - 42) + 42);
-							planet.d = Math.round(Math.random() * (40 - 10) + 10);
-						}	while (isUnique(planet, planets) === false);
+				_.forEach(planetXCoords, function(xCoord) {
 
-						planets.push(planet);
-					}
-					return planets;
-				},
-				drawPlanets: function(planet) {
+					var yCoord = Math.random() * (($scope.screenHeight - 10) - 10) + 10;
+
+					planetCoords.push([xCoord, Math.round(yCoord)]);
+
+				});
+
+				return planetCoords;
+
+			}
+
+			$scope.drawPlanets = function(planets) {
+
+				_.forEach(planets, function(planet) {
 					$scope.ctx.beginPath();
-			    $scope.ctx.arc(planet.x, planet.y, planet.d, 0, 2 * Math.PI, false);
+			    $scope.ctx.arc(planet[0], planet[1], 20, 0, 2 * Math.PI, false);
 			    $scope.ctx.lineWidth = 2;
 			    $scope.ctx.strokeStyle = 'rgb(237, 237, 102)';
 			    $scope.ctx.stroke();
 			    $scope.ctx.closePath();
-				},
-				touchPlanet: function() {
-					console.log('something');
-				}
+				})
+				
+			};
 
-			}
-		}
+
+		} // end link:
 	}
 });
-
