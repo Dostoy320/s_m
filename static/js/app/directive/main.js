@@ -17,15 +17,19 @@ smApp.directive("gamescreen", function() {
 			$scope.ctx = ctx;
 			$scope.frames = 0;
 
-			var screenWidth = canvas.width;
-			var screenHeight = canvas.height;
+			screenWidth = canvas.width;
+			screenHeight = canvas.height;
+
+			$scope.screenWidth = screenWidth;
+			$scope.screenHeight = screenHeight;
 
 			// Initialize ship at center of screen:
 			$scope.ship = {
 				'width': 30,
 				'height': 10,
 				'posX': screenWidth / 2,
-				'posY': screenHeight / 2
+				'posY': screenHeight / 2,
+				'speed': 4
 			};
 
 			var shipTarget = {
@@ -63,23 +67,23 @@ smApp.directive("gamescreen", function() {
 			// Move ship to target:
 			function moveShip() {
 				if($scope.ship.posX < shipTarget.x) {
-					$scope.ship.posX += 3;
+					$scope.ship.posX += $scope.ship.speed;
 				}
 				if($scope.ship.posX > shipTarget.x) {
-					$scope.ship.posX -= 3;
+					$scope.ship.posX -= $scope.ship.speed;
 				}
 				if($scope.ship.posY < shipTarget.y) {
-					$scope.ship.posY += 3;
+					$scope.ship.posY += $scope.ship.speed;
 				}
 				if($scope.ship.posY > shipTarget.y) {
-					$scope.ship.posY -= 3;
+					$scope.ship.posY -= $scope.ship.speed;
 				}
 
 				if($scope.ship.posX + $scope.ship.width >= screenWidth) {
-					$scope.ship.posX -= 3;
+					$scope.ship.posX -= $scope.ship.speed;
 				}
 				if($scope.ship.posX <= 0) {
-					$scope.ship.posX += 3;
+					$scope.ship.posX += $scope.ship.speed;
 				}
 			}
 
@@ -129,27 +133,39 @@ smApp.directive("gamescreen", function() {
 
 			});
 
-			var planets = $scope.planetBuilder.makePlanets(10);
+			var planets = [
+				{
+					x: 150,
+					y: 100,
+					radius: 50
+				},
+				{
+					x: 75,
+					y: 200,
+					radius: 75
+				},
+				{
+					x: 400,
+					y: 300,
+					radius: 25
+				}
+				];
 
-			console.log(planets);
+			var planets = $scope.makePlanets();
 
 			setInterval(function() {
-				ctx.fillStyle = 'black';
+				//ctx.fillStyle = 'black';
 				moveShip();
 				drawGame();
 
-				_.forEach(planets, function(planet) {
-					$scope.planetBuilder.drawPlanets(planet);
-				});
-
-				$scope.planetBuilder.drawPlanets();
+				$scope.drawPlanets(planets);
 
 				$scope.clickSignalTarget();
 
 				$scope.$apply($scope.posX = $scope.ship.posX);
 				$scope.$apply($scope.posY = $scope.ship.posY);
 				$scope.frames += 1;
-			}, 20);
+			}, 35); // 30FPS == 33.333333
 
 
 		}

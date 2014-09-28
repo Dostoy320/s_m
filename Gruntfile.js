@@ -7,6 +7,14 @@ module.exports = function(grunt) {
 			dist: {
 				src: ['static/js/**/*.js'],
 				dest: 'static/dist/s_m.js'
+			},
+			lib: {
+				src: [
+				'bower_components/angularjs/angular.min.js',
+				'bower_components/jquery/dist/jquery.min.js',
+				'bower_components/lodash/dist/lodash.min.js'
+				],
+				dest: 'static/dist/lib.js'
 			}
 		},
 		watch: {

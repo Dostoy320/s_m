@@ -1,3 +1,10 @@
+html, body {
+	height: 100%;
+}
+.container {
+	height: 100%;
+	overflow: hidden;
+}
 canvas {
 	border: 8px solid;
 	border-radius: 10px;
