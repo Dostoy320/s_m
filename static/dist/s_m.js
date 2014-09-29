@@ -180,9 +180,9 @@ smApp.directive("gamescreen", function() {
 				var xCoords = [];
 
 				// Set a 10px buffer from left edge of screen
-				var coord = 10;
+				var coord = 50;
 
-				while(coord < $scope.screenWidth - 10) { // 10pix buffer on right edge of screen
+				while(coord < $scope.screenWidth - 50) { // 10pix buffer on right edge of screen
 					var x1 = coord + 1;
 					coord += 75;
 					var x2 = coord;
@@ -209,7 +209,7 @@ smApp.directive("gamescreen", function() {
 
 					planetNumber += 1;
 
-					var yCoord = Math.random() * (($scope.screenHeight - 10) - 10) + 10;
+					var yCoord = Math.random() * (($scope.screenHeight - 50) - 50) + 50;
 
 					var planetRadius = Math.random() * (50 - 15) + 15;
 
