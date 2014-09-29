@@ -10,7 +10,7 @@ smApp.directive("gamescreen", function() {
 				// Establish x-axis grid slots:
 				var xCoords = [];
 
-				// Set a 10pix buffer from left edge of screen
+				// Set a 10px buffer from left edge of screen
 				var coord = 10;
 
 				while(coord < $scope.screenWidth - 10) { // 10pix buffer on right edge of screen
@@ -24,7 +24,7 @@ smApp.directive("gamescreen", function() {
 				var planetXCoords = [];
 
 				_.forEach(xCoords, function(coordinate) {
-					var setCoord = Math.random() < 0.5 ? true: false;
+					var setCoord = Math.random() < 0.3 ? true: false;
 					if(setCoord == true) {
 						var xCoord = Math.random() * (coordinate[1] - coordinate[0]) + coordinate[0];
 						planetXCoords.push(Math.round(xCoord));
@@ -32,17 +32,40 @@ smApp.directive("gamescreen", function() {
 				});
 
 				// Finalize coordinate array by randomly filling Y-axis coordinates
-				var planetCoords = [];
+				var planets = [];
+
+				var planetNumber = 0;
 
 				_.forEach(planetXCoords, function(xCoord) {
 
+					planetNumber += 1;
+
 					var yCoord = Math.random() * (($scope.screenHeight - 10) - 10) + 10;
 
-					planetCoords.push([xCoord, Math.round(yCoord)]);
+					var planetRadius = Math.random() * (50 - 15) + 15;
+
+					var planetName = "planet" + planetNumber;
+
+					var red = Math.round(Math.random() * (255 - 0) + 0);
+					var green = Math.round(Math.random() * (255 - 0) + 0);
+					var blue = Math.round(Math.random() * (255 - 0) + 0);
+
+
+					var planet = {
+						'name': planetName,
+						'xCoord': xCoord,
+						'yCoord': Math.round(yCoord),
+						'radius': Math.round(planetRadius),
+						'color': 'rgb(' + red + ',' + green + ',' + blue + ')'
+					}
+
+					planets.push(planet);
 
 				});
 
-				return planetCoords;
+				console.log(planets);
+
+				return planets;
 
 			}
 
@@ -50,10 +73,12 @@ smApp.directive("gamescreen", function() {
 
 				_.forEach(planets, function(planet) {
 					$scope.ctx.beginPath();
-			    $scope.ctx.arc(planet[0], planet[1], 20, 0, 2 * Math.PI, false);
+			    $scope.ctx.arc(planet['xCoord'], planet['yCoord'], planet['radius'], 0, 2 * Math.PI, false);
 			    $scope.ctx.lineWidth = 2;
 			    $scope.ctx.strokeStyle = 'rgb(237, 237, 102)';
+			    $scope.ctx.fillStyle = planet['color'];
 			    $scope.ctx.stroke();
+			   	$scope.ctx.fill();
 			    $scope.ctx.closePath();
 				})
 				
